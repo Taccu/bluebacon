@@ -26,7 +26,7 @@ import de.dhbw.bluebacon.MainActivity;
 import de.dhbw.bluebacon.R;
 
 public class DiscoveryListener extends AsyncTask<Void, Void, String> {
-
+    //TODO: Why is this public?
     public static final String LOG_TAG = "DHBW DiscoveryListener";
     public static final int SOCKET_TIMEOUT_MILLIS = 2000;
     public static final String SERVER_URL_TEMPLATE = "http://%s/json.php";
@@ -34,6 +34,7 @@ public class DiscoveryListener extends AsyncTask<Void, Void, String> {
     public AtomicBoolean gotOwnDatagram;
 
     Context context;
+    //TODO: This variable should be not global, as it is only used in listen()-method
     DatagramSocket socket;
 
     private static final String HMAC_SECRET = "eFqqDnFNeLLJ";
@@ -52,6 +53,7 @@ public class DiscoveryListener extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String local_ip) {
         if(local_ip == null){
             Log.i(LOG_TAG, "UDP discovery: we got no answer");
+            //TODO: this variable is a waste of ram
             boolean preferRemoteServer = ((MainActivity)context).prefs.getBoolean(MainActivity.PrefKeys.SERVER_LOCATION_PRIORITY.toString(), true);
             if(preferRemoteServer){
                 Log.e(LOG_TAG, "No local and/or remote servers could be reached.");

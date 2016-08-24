@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -23,7 +24,7 @@ public class DiscoveryBroadcaster extends AsyncTask<Void, Void, Void> {
 
     public static final int UDP_PORT = 9996;
     public static final String LOG_TAG = "DHBW Broadcaster";
-
+    //TODO: static variable name
     private static byte[] last_random_bytes = new byte[32];
 
     private final Context context;
@@ -37,9 +38,30 @@ public class DiscoveryBroadcaster extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params){
         // gotOwnDatagram gets changed by DiscoveryListener. if true, we can be sure we're listening
+
+        //TODO: Use handler for sending packets
+        /***
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    sendUdp(InetAddress.getLocalHost(), false, new byte[]{});
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //It's magic
+                handler.postDelayed(this,100);
+            }
+        };
+        handler.postDelayed(runnable, 100);
+        while(!this.gotOwnDatagram.get()){} // do nothing and win
+        handler.removeCallbacks(runnable);
+        ***/
+
         do{
             try {
-                Thread.sleep(50);
+                Thread.sleep(50); // <--- LOL
             } catch (InterruptedException e){
                 e.printStackTrace();
                 return null;

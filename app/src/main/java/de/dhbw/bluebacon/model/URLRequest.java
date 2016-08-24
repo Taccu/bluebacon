@@ -41,16 +41,18 @@ public class URLRequest {
 
         http_status = connection.getResponseCode();
         String line;
+        //TODO: Enclose stream using a try... finally block
         InputStreamReader isr = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8);
         BufferedReader reader = new BufferedReader(isr);
         while ((line = reader.readLine()) != null)
         {
             sb.append(line);
+            //TODO: Please use System.lineSeparator(); instead of '\n'
             sb.append('\n');
         }
 
-        isr.close();
         reader.close();
+        isr.close();
         connection.disconnect();
 
         this.result = sb.toString();

@@ -19,32 +19,35 @@ import de.dhbw.bluebacon.R;
 /**
  * Loader for data loading
  */
-public class JSONLoader extends AsyncTask<String, Void, Void> {
+public class JSONLoader extends AsyncTask<String, Void, Boolean> {
 
     protected Context context;
     public static final String SERVER_URL = "http://example.com";
     public static final String LOG_TAG = "DHBW JSONLoader";
+    //TODO: does usedServerType need to be global? Read one time... serious this wastes space
     public String usedServerType;
-    private boolean success;
+    //TODO: Same here......... class variables can not be garbage collected ( kinda)
     private final boolean try_discovery;
-
+    //TODO: Removed for reduced RAM usage
+    //private boolean success;
     public JSONLoader(Context context){
         this.context = context;
-        this.success = false;
+        //TODO: Warum wird diese Variable benutzt?
         this.try_discovery = true;
         this.usedServerType = "Remote server";
     }
 
     public JSONLoader(Context context, boolean try_discovery){
         this.context = context;
-        this.success = false;
+        //TODO: Warum wird diese Variable benutzt?
         this.try_discovery = try_discovery;
         this.usedServerType = "Remote server";
     }
 
     @Override
-    protected Void doInBackground(String... params){
+    protected Boolean doInBackground(String... params){
         String url = null;
+        boolean comSuccess = false;
         if(params.length > 0){
             url = params[0];
             this.usedServerType = "Local server";
@@ -53,18 +56,20 @@ public class JSONLoader extends AsyncTask<String, Void, Void> {
         try {
             Tuple<BeaconData[], Machine[]> parsed = parseJSON(result);
             save(parsed.getX(), parsed.getY());
-            success = true;
+            comSuccess = true;
         } catch(JSONException e){
             e.printStackTrace();
         }
-        return null;
+        url = null;
+        result = null;
+        return comSuccess;
     }
 
     @Override
-    protected void onPostExecute(Void params) {
+    protected void onPostExecute(Boolean comSuccess) {
         ((MainActivity)context).getBlueBaconManager().loadMachines();
         boolean preferRemoteServer = ((MainActivity)context).prefs.getBoolean(MainActivity.PrefKeys.SERVER_LOCATION_PRIORITY.toString(), true);
-        if(success){
+        if(comSuccess){
             Log.i(LOG_TAG, "Success.");
             ((MainActivity)context).progressHide();
             Toast.makeText(context, context.getString(R.string.update_success), Toast.LENGTH_LONG).show();
