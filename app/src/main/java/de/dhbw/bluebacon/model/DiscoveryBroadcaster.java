@@ -51,11 +51,13 @@ public class DiscoveryBroadcaster extends AsyncTask<Void, Void, Void> {
                     e.printStackTrace();
                 }
                 //It's magic
-                handler.postDelayed(this,100);
+                // do nothing and win
+                if(!this.gotOwnDatagram.get()) {
+                    handler.postDelayed(this,100);   
+                }
             }
         };
         handler.postDelayed(runnable, 100);
-        while(!this.gotOwnDatagram.get()){} // do nothing and win
         handler.removeCallbacks(runnable);
         ***/
 
