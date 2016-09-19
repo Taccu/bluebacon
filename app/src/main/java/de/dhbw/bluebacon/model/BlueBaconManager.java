@@ -23,13 +23,16 @@ import java.util.Map;
 import de.dhbw.bluebacon.BuildConfig;
 import de.dhbw.bluebacon.MainActivity;
 
+
+
 /**
  * BlueBaconManager class
  * manager registers activity as observers on machines or observableBeacons
  */
 public class BlueBaconManager implements IObservable {
 
-    protected static final Integer FOREGROUNDSCANPERIOD = 150;
+
+    protected static final Integer FOREGROUNDSCANPERIOD = BeaconSettings.updateintervall;
     protected static final Integer DELETEBEACONAFTER = 10000;
     protected static final String LOG_TAG = "DHBW BlueBaconManager";
 
