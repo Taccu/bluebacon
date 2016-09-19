@@ -26,6 +26,7 @@ public class ObservableBeacon implements IObservable, Comparable<ObservableBeaco
     protected Integer cleanedRSSI = 0;
     protected Double cleanedDistance = 0.;
     protected Boolean useCleanedValues = true;
+    protected Boolean sorted;
 
     /**
      * Constructor
@@ -39,6 +40,7 @@ public class ObservableBeacon implements IObservable, Comparable<ObservableBeaco
         this.useCleanedValues = useCleanedValues;
         this.uuid = altBeacon.getId1() + "-" + altBeacon.getId2() + "-" + altBeacon.getId3();
         this.setBeacon(altBeacon);
+        this.sorted = false;
     }
 
     /**
@@ -220,7 +222,11 @@ public class ObservableBeacon implements IObservable, Comparable<ObservableBeaco
      */
     @Override
     public int compareTo(@NonNull ObservableBeacon another) {
-        return (this.getRSSI() - another.getRSSI()) * -1;
+        if(!this.sorted){
+            sorted = true;
+            return 1;
+        }
+        return 0;
     }
 
     /**
