@@ -41,7 +41,7 @@ dependencies {
     compile project(':SmartEyeglassAPI')
 }
 
-task findbugsMain(type: FindBugs, dependsOn: assembleDebug) {
+task findbugsMain(type: FindBugs, dependsOn: "assembleDebug") {
 
     description 'Run findbugs on main'
     group 'verification'
@@ -64,7 +64,7 @@ task findbugsMain(type: FindBugs, dependsOn: assembleDebug) {
     }
 }
 
-task pmdMain (type: Pmd, dependsOn: assembleDebug) {
+task pmdMain (type: Pmd, dependsOn: "assembleDebug") {
 
     description 'Run pmd'
     group 'verification'
