@@ -15,6 +15,8 @@ import org.altbeacon.beacon.service.RangedBeacon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -323,6 +325,22 @@ public class BlueBaconManager implements IObservable {
     }
 
     /**
+     * Return nearest machines
+     * @param limit only return -limit- machines
+     */
+    public ArrayList<Machine> getNearestMachines(int limit) {
+        ArrayList<Machine> machines = this.machines;
+        Collections.sort(machines, new MachineComparator());
+        ArrayList<Machine> result = new ArrayList<>();
+        for(int i = 0; i < limit; i++){
+            if(machines.size() > i && machines.get(i).getDistance() > 0) {
+                result.add(machines.get(i));
+            }
+        }
+        return result;
+    }
+
+    /**
      * subscribe observing object for changes of this object
      * @param observer Observing object
      */
@@ -350,6 +368,18 @@ public class BlueBaconManager implements IObservable {
     public Boolean isSubscribed(IObserver observer) {
         //Not used
         return false;
+    }
+
+    private class MachineComparator implements Comparator<Machine> {
+        @Override
+        public int compare(Machine m1, Machine m2) {
+            if(m1.getDistance() > m2.getDistance()){
+                return 1;
+            } else if(m1.getDistance() < m2.getDistance()){
+                return -1;
+            }
+            return 0;
+        }
     }
 
 }
